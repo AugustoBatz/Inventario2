@@ -10,7 +10,6 @@ package inventario2;
  * @author sys515
  */
 import java.sql.*;
-import com.mysql.jdbc.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

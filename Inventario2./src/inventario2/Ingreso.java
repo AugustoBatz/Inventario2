@@ -184,7 +184,7 @@ public class Ingreso extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(883, 131, 41, 39));
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 120, 41, 39));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ingresoproveedor.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +192,7 @@ public class Ingreso extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(857, 38, 67, -1));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 40, 67, -1));
 
         palenparaprov.setBackground(new java.awt.Color(189, 189, 189));
 
@@ -248,6 +248,9 @@ public class Ingreso extends javax.swing.JFrame {
             }
         });
 
+        jLabel15.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel15.setText("Proveedor");
+
         javax.swing.GroupLayout palenparaprovLayout = new javax.swing.GroupLayout(palenparaprov);
         palenparaprov.setLayout(palenparaprovLayout);
         palenparaprovLayout.setHorizontalGroup(
@@ -268,30 +271,35 @@ public class Ingreso extends javax.swing.JFrame {
                     .addComponent(Nombre))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(palenparaprovLayout.createSequentialGroup()
-                .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(palenparaprovLayout.createSequentialGroup()
-                        .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel13))
-                        .addGap(26, 26, 26)
-                        .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Serie, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Numero, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(66, 66, 66)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59))
-                    .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(palenparaprovLayout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addGap(43, 43, 43)
-                            .addComponent(Otro, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel11)))
+                            .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel12)
+                                .addComponent(jLabel13))
+                            .addGap(26, 26, 26)
+                            .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(Serie, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Numero, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(66, 66, 66)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(59, 59, 59))
+                        .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(palenparaprovLayout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(43, 43, 43)
+                                .addComponent(Otro, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel11)))
+                    .addGroup(palenparaprovLayout.createSequentialGroup()
+                        .addGap(166, 166, 166)
+                        .addComponent(jLabel15)))
                 .addContainerGap(106, Short.MAX_VALUE))
         );
         palenparaprovLayout.setVerticalGroup(
             palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(palenparaprovLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(palenparaprovLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Nombre))
@@ -333,10 +341,6 @@ public class Ingreso extends javax.swing.JFrame {
 
         jPanel2.add(palenparaprov, new org.netbeans.lib.awtextra.AbsoluteConstraints(385, 38, -1, -1));
 
-        jLabel15.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel15.setText("Proveedor");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(579, 12, -1, -1));
-
         jLabel16.setText("Porcentaje de ganancia");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 209, -1, -1));
 
@@ -353,7 +357,7 @@ public class Ingreso extends javax.swing.JFrame {
         jPanel2.add(Ganancia, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 231, 98, -1));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/regresara10.png"))); // NOI18N
-        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(857, 305, 61, -1));
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 340, 61, -1));
 
         jLabel17.setText("Codigo");
         jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
@@ -372,7 +376,7 @@ public class Ingreso extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1029, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
