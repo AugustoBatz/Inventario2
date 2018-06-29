@@ -58,17 +58,18 @@ public class Mostrarventas extends javax.swing.JFrame {
             modeloBusqueda.addColumn("Nit");
             modeloBusqueda.addColumn("Cliente");
             modeloBusqueda.addColumn("Cantidad");
+            modeloBusqueda.addColumn("Unidad");
             modeloBusqueda.addColumn("Precio Unitario");
             modeloBusqueda.addColumn("Total");
             
-            registro.setModel(modeloBusqueda);
+            rSTableMetro1.setModel(modeloBusqueda);
 
-            String datos[] = new String[12];
+            String datos[] = new String[13];
 
           try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,L.PrecioUnitario,L.PrecioTotal FROM Cliente C inner JOIN FacturaVenta F on C.id=F.Cliente_id inner JOIN LoteVenta L on L.FacturaVenta_id=F.id inner JOIN Producto P on P.id=L.Producto_id Order by L.Fecha");
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,P.Medida,L.PrecioUnitario,L.PrecioTotal FROM Cliente C inner JOIN FacturaVenta F on C.id=F.Cliente_id inner JOIN LoteVenta L on L.FacturaVenta_id=F.id inner JOIN Producto P on P.id=L.Producto_id Order by L.Fecha");
           
             while (Ca.next()) {
                
@@ -84,23 +85,24 @@ public class Mostrarventas extends javax.swing.JFrame {
                 datos[9] = Ca.getString(11);    
                 datos[10] = Ca.getString(12);
                 datos[11] = Ca.getString(13);
+                datos[12] = Ca.getString(14);
                 modeloBusqueda.addRow(datos);
                 
             }
-            registro.setModel(modeloBusqueda);
+            rSTableMetro1.setModel(modeloBusqueda);
             
         } catch (SQLException ex) {
             Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
         }
-        registro.setSize(1000, 1000);
-        registro.setVisible(true);
-        registro.getColumn("No. Lote").setPreferredWidth(65);
-        registro.getColumn("Codigo").setPreferredWidth(50);
-        registro.getColumn("Serie").setPreferredWidth(45);
-        registro.getColumn("Número").setPreferredWidth(65);
-        registro.getColumn("Fecha").setPreferredWidth(90);
-        registro.getColumn("Cliente").setPreferredWidth(90);
-    registro.getColumn("Precio Unitario").setPreferredWidth(110);
+        rSTableMetro1.setSize(1000, 1000);
+        rSTableMetro1.setVisible(true);
+        rSTableMetro1.getColumn("No. Lote").setPreferredWidth(65);
+        rSTableMetro1.getColumn("Codigo").setPreferredWidth(50);
+        rSTableMetro1.getColumn("Serie").setPreferredWidth(45);
+        rSTableMetro1.getColumn("Número").setPreferredWidth(65);
+        rSTableMetro1.getColumn("Fecha").setPreferredWidth(90);
+        rSTableMetro1.getColumn("Cliente").setPreferredWidth(90);
+    rSTableMetro1.getColumn("Precio Unitario").setPreferredWidth(110);
     }
 
     /**
@@ -113,8 +115,8 @@ public class Mostrarventas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        registro = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        rSTableMetro1 = new rojerusan.RSTableMetro();
         Inicio2 = new javax.swing.JLabel();
         Inicio = new com.toedter.calendar.JDateChooser();
         Final = new com.toedter.calendar.JDateChooser();
@@ -135,20 +137,21 @@ public class Mostrarventas extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(189, 189, 189));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        registro.setModel(new javax.swing.table.DefaultTableModel(
+        rSTableMetro1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "No Lote", "Serie", "Numero", "Fecha", "Producto", "Cantidad", "Precio Unitario", "Precio Total"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(registro);
+        rSTableMetro1.setFuenteHead(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jScrollPane2.setViewportView(rSTableMetro1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 950, 380));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 980, 380));
 
         Inicio2.setText("Inicio");
 
@@ -192,7 +195,7 @@ public class Mostrarventas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 984, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(73, 73, 73)
                 .addComponent(Inicio2)
@@ -236,8 +239,9 @@ public class Mostrarventas extends javax.swing.JFrame {
                         .addComponent(Final2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Todo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -319,11 +323,11 @@ public class Mostrarventas extends javax.swing.JFrame {
     private void llenar2(String B)
     {
           modeloBusqueda.setRowCount(0);
-        String datos[]=new String[12];
+        String datos[]=new String[13];
          try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,L.PrecioUnitario,L.PrecioTotal\n" +
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,P.Medida,L.PrecioUnitario,L.PrecioTotal\n" +
 
 "FROM Producto P \n" +
 "inner JOIN LoteVenta L \n" +   
@@ -346,11 +350,12 @@ public class Mostrarventas extends javax.swing.JFrame {
                 datos[9] = Ca.getString(11);    
                 datos[10] = Ca.getString(12);
                 datos[11] = Ca.getString(13);
+                datos[12] = Ca.getString(14);
                
                 modeloBusqueda.addRow(datos);
                 
             }
-            registro.setModel(modeloBusqueda);
+            rSTableMetro1.setModel(modeloBusqueda);
             
         } catch (SQLException ex) {
             Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
@@ -359,11 +364,11 @@ public class Mostrarventas extends javax.swing.JFrame {
     private void Llenar(String B)
     {
         modeloBusqueda.setRowCount(0);
-        String datos[]=new String[12];
+        String datos[]=new String[13];
          try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("Select P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,L.PrecioUnitario,L.PrecioTotal\n" +
+            ResultSet Ca = sx.executeQuery("Select P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,P.Medida,L.PrecioUnitario,L.PrecioTotal\n" +
 "FROM Producto P \n" +
 "inner JOIN LoteVenta L \n" +
 "on P.id=L.Producto_id \n" +
@@ -385,12 +390,13 @@ public class Mostrarventas extends javax.swing.JFrame {
                 datos[9] = Ca.getString(11);    
                 datos[10] = Ca.getString(12);
                 datos[11] = Ca.getString(13);
+                datos[12] = Ca.getString(14);
                 
                
                 modeloBusqueda.addRow(datos);
                 
             }
-            registro.setModel(modeloBusqueda);
+            rSTableMetro1.setModel(modeloBusqueda);
         } catch (SQLException ex) {
             Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -537,12 +543,12 @@ public class Mostrarventas extends javax.swing.JFrame {
 
         modeloBusqueda.setRowCount(0);
 
-        String datos[] = new String[12];
+        String datos[] = new String[13];
 
           try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,L.PrecioUnitario,L.PrecioTotal FROM Cliente C inner JOIN FacturaVenta F on C.id=F.Cliente_id inner JOIN LoteVenta L on L.FacturaVenta_id=F.id inner JOIN Producto P on P.id=L.Producto_id Order by L.Fecha");
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre,P.Marca,L.Fecha,L.NoLote,F.Serie,F.Numero,C.Nit,C.NombreC,C.Apellido,L.Cantidad,P.Medida,L.PrecioUnitario,L.PrecioTotal FROM Cliente C inner JOIN FacturaVenta F on C.id=F.Cliente_id inner JOIN LoteVenta L on L.FacturaVenta_id=F.id inner JOIN Producto P on P.id=L.Producto_id Order by L.Fecha");
           
             while (Ca.next()) {
                
@@ -558,10 +564,11 @@ public class Mostrarventas extends javax.swing.JFrame {
                 datos[9] = Ca.getString(11);    
                 datos[10] = Ca.getString(12);
                 datos[11] = Ca.getString(13);
+                datos[12] = Ca.getString(14);
                 modeloBusqueda.addRow(datos);
                 
             }
-            registro.setModel(modeloBusqueda);
+            rSTableMetro1.setModel(modeloBusqueda);
             
         } catch (SQLException ex) {
             Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
@@ -614,7 +621,7 @@ public class Mostrarventas extends javax.swing.JFrame {
     private javax.swing.JRadioButton Todo;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable registro;
+    private javax.swing.JScrollPane jScrollPane2;
+    private rojerusan.RSTableMetro rSTableMetro1;
     // End of variables declaration//GEN-END:variables
 }

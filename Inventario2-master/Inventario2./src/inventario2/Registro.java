@@ -83,6 +83,7 @@ public class Registro extends javax.swing.JFrame {
             modeloBusqueda.addColumn("Proveedor");
             modeloBusqueda.addColumn("Fecha Compra");
             modeloBusqueda.addColumn("Cantidad");
+            modeloBusqueda.addColumn("Unidad");
             modeloBusqueda.addColumn("Costo Unitario");
             modeloBusqueda.addColumn("Costo Total");
             modeloBusqueda.addColumn("Descripcion");
@@ -92,12 +93,12 @@ public class Registro extends javax.swing.JFrame {
             
             Lote.setModel(modeloBusqueda);
 
-            String datos[] = new String[11];
+            String datos[] = new String[12];
 
           try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.Nombre, L.Fecha, L.Cantidad, \n" +
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.NombreV, L.Fecha, L.Cantidad, P.Medida,\n" +
 "L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal\n" +
 "FROM Producto P \n" +
 "inner JOIN Registro_Compras L \n" +
@@ -119,6 +120,7 @@ public class Registro extends javax.swing.JFrame {
                 datos[8] = Ca.getString(9);
                 datos[9] = Ca.getString(10);
                 datos[10] = Ca.getString(11);
+                datos[11] = Ca.getString(12);
                
                 modeloBusqueda.addRow(datos);
                 
@@ -419,12 +421,12 @@ public class Registro extends javax.swing.JFrame {
         Final2.setVisible(false);
         Regre.setVisible(false);
 
-            String datos[] = new String[11];
+            String datos[] = new String[12];
 
           try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.Nombre, L.Fecha, L.Cantidad, \n" +
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.NombreV, L.Fecha, L.Cantidad, P.Medida,\n" +
 "L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal\n" +
 "FROM Producto P \n" +
 "inner JOIN Registro_Compras L \n" +
@@ -446,6 +448,7 @@ public class Registro extends javax.swing.JFrame {
                 datos[8] = Ca.getString(9);
                 datos[9] = Ca.getString(10);
                 datos[10] = Ca.getString(11);
+                datos[11] = Ca.getString(12);
                
                 modeloBusqueda.addRow(datos);
                 
@@ -468,9 +471,11 @@ public class Registro extends javax.swing.JFrame {
             
             Date uno=new Date(año-1900,mes-1,dia);
             Date dos=new Date(año2-1900,mes2-1,dia2);
+                    System.out.println(uno+" y "+dos+" ; "+cod);
             Connection tr = con.conexion();
             JasperReport reporte= null;
-            String path="/home/sys515/Documentos/ProyecoPEPS/Inventario2-master/Inventario2./src/Reportes/ventasProd.jasper";
+            String path="/home/sys515/Documentos/Git/Inventario2/Inventario2-master/Inventario2./src/Reportes/ventasProd.jasper";
+            
             Map parametro =new HashMap();
             parametro.put("Fecha2",dos );
             parametro.put("Fecha1", uno);
@@ -502,11 +507,11 @@ public class Registro extends javax.swing.JFrame {
     private void llenar2(String B)
     {
           modeloBusqueda.setRowCount(0);
-        String datos[]=new String[11];
+        String datos[]=new String[12];
          try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.Nombre, L.Fecha, L.Cantidad, \n" +
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.NombreV, L.Fecha, L.Cantidad,P.Medida, \n" +
 "L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal\n" +
 "FROM Producto P \n" +
 "inner JOIN Registro_Compras L \n" +
@@ -528,6 +533,7 @@ public class Registro extends javax.swing.JFrame {
                 datos[8] = Ca.getString(9);
                 datos[9] = Ca.getString(10);
                 datos[10] = Ca.getString(11);
+                datos[11] = Ca.getString(12);
                
                 modeloBusqueda.addRow(datos);
                 
@@ -541,11 +547,11 @@ public class Registro extends javax.swing.JFrame {
     private void Llenar(String B)
     {
         modeloBusqueda.setRowCount(0);
-        String datos[]=new String[11];
+        String datos[]=new String[12];
          try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.Nombre, L.Fecha, L.Cantidad, \n" +
+            ResultSet Ca = sx.executeQuery("SELECT P.Codigo,P.Nombre, P.Marca,V.NombreV, L.Fecha, L.Cantidad,P.Medida, \n" +
 "L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal\n" +
 "FROM Producto P \n" +
 "inner JOIN Registro_Compras L \n" +
@@ -567,6 +573,7 @@ public class Registro extends javax.swing.JFrame {
                 datos[8] = Ca.getString(9);
                 datos[9] = Ca.getString(10);
                 datos[10] = Ca.getString(11);
+                datos[11] = Ca.getString(12);
                
                 modeloBusqueda.addRow(datos);
                 

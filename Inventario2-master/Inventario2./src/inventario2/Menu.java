@@ -56,7 +56,6 @@ public class Menu extends javax.swing.JFrame {
         botonclientes = new javax.swing.JButton();
         botonprov = new javax.swing.JButton();
         botonfinanzas = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -149,14 +148,6 @@ public class Menu extends javax.swing.JFrame {
         botonfinanzas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fin31.png"))); // NOI18N
         jPanel2.add(botonfinanzas, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 80, 80));
 
-        jButton3.setText("Resoluciones");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 240, -1, -1));
-
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 310));
 
         pack();
@@ -208,14 +199,6 @@ System.exit(0);
         prov.setVisible(true);
     }//GEN-LAST:event_botonprovActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Resolucion nr=new Resolucion();
-        nr.setVisible(true);
-        dispose();
-        
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -259,7 +242,6 @@ System.exit(0);
     private javax.swing.JButton botonventa;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

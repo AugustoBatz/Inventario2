@@ -13,10 +13,12 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -26,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -43,6 +46,11 @@ public class Inventario extends javax.swing.JFrame {
     JTextField Nombre=new JTextField(12);
     JTextField Marca=new JTextField(12);
     JTextField Stock_Minimo=new JTextField(12);
+DefaultTableModel modeloBusqueda = new DefaultTableModel() {
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+            };
     
        
        
@@ -57,13 +65,14 @@ public class Inventario extends javax.swing.JFrame {
         initComponents();
        
         this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
-//pruebas
-        //this.setUndecorated(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();    
         this.setLocation(dim.width/4-this.getSize().width/4, dim.height/10-this.getSize().height/10);
-        
+        this.setTitle("Inventario De La 'Empresa' - Sistema Inventario BTZ");
         
         this.setResizable(false);
+//pruebas
+        //this.setUndecorated(true);
+        this.setSize(1140,700);
         
         //this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
         //
@@ -72,28 +81,26 @@ public class Inventario extends javax.swing.JFrame {
          
         try {
 
-            DefaultTableModel modeloBusqueda = new DefaultTableModel() {
-                public boolean isCellEditable(int rowIndex, int columnIndex) {
-                    return false;
-                }
-            };
+            
             modeloBusqueda.addColumn("Codigo");
             modeloBusqueda.addColumn("Nombre");
             modeloBusqueda.addColumn("Marca");
+            modeloBusqueda.addColumn("Unidad");
             modeloBusqueda.addColumn("Existencia");
             modeloBusqueda.addColumn("Stock Minimo");
             Inventario.setModel(modeloBusqueda);
 
-            String datos[] = new String[5];
+            String datos[] = new String[6];
             int contar = 0;
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT Codigo,Nombre,Marca,Existencia,StockMinimo FROM Producto");
+            ResultSet Ca = sx.executeQuery("SELECT Codigo,Nombre,Marca,Medida,Existencia,StockMinimo FROM Producto");
             while (Ca.next()) {
                 datos[0]=Ca.getString(1);
                 datos[1] = Ca.getString(2);
                 datos[2] = Ca.getString(3);
                 datos[3] = Ca.getString(4);
                 datos[4] = Ca.getString(5);
+                datos[5] = Ca.getString(6);
                 modeloBusqueda.addRow(datos);
                 contar++;
             }
@@ -127,7 +134,8 @@ public class Inventario extends javax.swing.JFrame {
         });
           FormatoTabla ft = new FormatoTabla(0);
         Inventario.setDefaultRenderer (Object.class, ft );
-      
+        Todo.setSelected(true);
+      LLenar.setVisible(false);
         
     }
 
@@ -142,9 +150,7 @@ public class Inventario extends javax.swing.JFrame {
 
         Menu = new javax.swing.JPopupMenu();
         Editar = new javax.swing.JMenuItem();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Inventario = new javax.swing.JTable();
+        Panel = new javax.swing.JPanel();
         Act = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -152,6 +158,13 @@ public class Inventario extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Inventario = new rojerusan.RSTableMetro();
+        P2 = new javax.swing.JRadioButton();
+        Todo = new javax.swing.JRadioButton();
+        Generar = new javax.swing.JButton();
+        LLenar = new rojerusan.RSComboMetro();
+        jLabel5 = new javax.swing.JLabel();
 
         Editar.setText("Editar");
         Editar.addActionListener(new java.awt.event.ActionListener() {
@@ -162,14 +175,66 @@ public class Inventario extends javax.swing.JFrame {
         Menu.add(Editar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setSize(new java.awt.Dimension(1040, 602));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(189, 189, 189));
+        Panel.setBackground(new java.awt.Color(189, 189, 189));
+        Panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Act.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-actualizar-50.png"))); // NOI18N
+        Act.setBorderPainted(false);
+        Act.setContentAreaFilled(false);
+        Act.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-actualizar-filled-50.png"))); // NOI18N
+        Act.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActActionPerformed(evt);
+            }
+        });
+        Panel.add(Act, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 560, 40, 42));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-producto-50.png"))); // NOI18N
+        jButton1.setContentAreaFilled(false);
+        jButton1.setDefaultCapable(false);
+        jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-producto-filled-50.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        Panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 550, 51, 50));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-volver-asignación-50.png"))); // NOI18N
+        jButton2.setBorderPainted(false);
+        jButton2.setContentAreaFilled(false);
+        jButton2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-volver-asignación-filled-50.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        Panel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 540, 49, -1));
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("INVENTARIO");
+        Panel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 20, 200, 44));
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel2.setText("Agregar producto");
+        Panel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 510, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel3.setText("Regresar");
+        Panel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 510, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel4.setText("Generar Reporte");
+        Panel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 80, -1, -1));
 
         Inventario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -182,111 +247,55 @@ public class Inventario extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        Inventario.setAutoscrolls(false);
+        Inventario.setColorBackgoundHead(new java.awt.Color(85, 1, 156));
         Inventario.setComponentPopupMenu(Menu);
-        Inventario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                InventarioMousePressed(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                InventarioMouseClicked(evt);
-            }
-        });
-        Inventario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                InventarioKeyReleased(evt);
-            }
-        });
-        jScrollPane1.setViewportView(Inventario);
+        jScrollPane2.setViewportView(Inventario);
 
-        Act.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/actualizara17.png"))); // NOI18N
-        Act.addActionListener(new java.awt.event.ActionListener() {
+        Panel.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 1010, 320));
+
+        P2.setText("Producto");
+        P2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ActActionPerformed(evt);
+                P2ActionPerformed(evt);
             }
         });
+        Panel.add(P2, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 81, -1, -1));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregara17.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Todo.setText("Todo");
+        Todo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                TodoActionPerformed(evt);
             }
         });
+        Panel.add(Todo, new org.netbeans.lib.awtextra.AbsoluteConstraints(229, 81, -1, -1));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/regresara7.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        Generar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-vuelto-asignación-50.png"))); // NOI18N
+        Generar.setBorderPainted(false);
+        Generar.setContentAreaFilled(false);
+        Generar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/iconoso/icons8-vuelto-asignación-filled-50.png"))); // NOI18N
+        Generar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                GenerarActionPerformed(evt);
             }
         });
+        Panel.add(Generar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, -1, -1));
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("INVENTARIO");
+        LLenar.setColorArrow(new java.awt.Color(86, 0, 169));
+        LLenar.setColorBorde(new java.awt.Color(86, 0, 169));
+        LLenar.setColorFondo(new java.awt.Color(86, 0, 169));
+        LLenar.setFocusCycleRoot(true);
+        LLenar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LLenarActionPerformed(evt);
+            }
+        });
+        Panel.add(LLenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(406, 76, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel2.setText("Agregar producto");
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel5.setText("Actualizar");
+        Panel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 510, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel3.setText("Regresar");
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel4.setText("Actualizar");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(3, 3, 3)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(153, 153, 153)
-                                .addComponent(jLabel4)
-                                .addGap(3, 3, 3)
-                                .addComponent(Act, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(Act, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 10, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(26, 26, 26))))
-        );
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 950, 410));
+        getContentPane().add(Panel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -306,20 +315,23 @@ public class Inventario extends javax.swing.JFrame {
             modeloBusqueda.addColumn("Codigo");
             modeloBusqueda.addColumn("Nombre");
             modeloBusqueda.addColumn("Marca");
+            modeloBusqueda.addColumn("Unidad");
+            
             modeloBusqueda.addColumn("Existencia");
             modeloBusqueda.addColumn("Stock Minimo");
             Inventario.setModel(modeloBusqueda);
 
-            String datos[] = new String[5];
+            String datos[] = new String[6];
             int contar = 0;
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT Codigo,Nombre,Marca,Existencia,StockMinimo FROM Producto");
+            ResultSet Ca = sx.executeQuery("SELECT Codigo,Nombre,Marca,Medida,Existencia,StockMinimo FROM Producto");
             while (Ca.next()) {
                 datos[0]=Ca.getString(1);
                 datos[1] = Ca.getString(2);
                 datos[2] = Ca.getString(3);
                 datos[3] = Ca.getString(4);
                 datos[4] = Ca.getString(5);
+                datos[5] = Ca.getString(6);
                 modeloBusqueda.addRow(datos);
                 contar++;
             }
@@ -348,19 +360,6 @@ public class Inventario extends javax.swing.JFrame {
         men.setVisible(true);
         dispose(); // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
-
-    private void InventarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_InventarioKeyReleased
-
-    }//GEN-LAST:event_InventarioKeyReleased
-
-    private void InventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventarioMouseClicked
-
-    }//GEN-LAST:event_InventarioMouseClicked
-
-    private void InventarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InventarioMousePressed
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_InventarioMousePressed
 
     
     private Boolean Autorizar()
@@ -582,6 +581,129 @@ public class Inventario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_EditarActionPerformed
 
+    private void TodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TodoActionPerformed
+
+        if(Todo.isSelected()==true)
+        {
+            P2.setSelected(false);
+        llena();
+        LLenar.setVisible(false);
+        }
+        else
+        {
+            P2.setSelected(true);
+             LLenar.removeAllItems();
+
+        prod();
+        LLenar.setVisible(true);
+        
+        Todo.setSelected(false);
+        }
+        
+
+    }//GEN-LAST:event_TodoActionPerformed
+
+    private void llena()
+    {
+                modeloBusqueda.setRowCount(0);
+
+         try {
+
+            
+           
+            String datos[] = new String[6];
+            Statement sx = Consulta.createStatement();
+            ResultSet Ca = sx.executeQuery("SELECT Codigo,Nombre,Marca,Medida,Existencia,StockMinimo FROM Producto");
+            while (Ca.next()) {
+                datos[0]=Ca.getString(1);
+                datos[1] = Ca.getString(2);
+                datos[2] = Ca.getString(3);
+                datos[3] = Ca.getString(4);
+                datos[4] = Ca.getString(5);
+                datos[5] = Ca.getString(6);
+                modeloBusqueda.addRow(datos);
+            }
+            Inventario.setModel(modeloBusqueda);
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void GenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarActionPerformed
+     
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GenerarActionPerformed
+
+    private void P2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_P2ActionPerformed
+          if(P2.isSelected()==true) 
+          {
+                  LLenar.removeAllItems();
+
+        prod();
+        LLenar.setVisible(true);
+        
+        Todo.setSelected(false);
+          }
+          else
+          {
+              Todo.setSelected(true);
+              
+        P2.setSelected(false);
+        llena();
+        LLenar.setVisible(false);
+          }
+    }//GEN-LAST:event_P2ActionPerformed
+
+    private void LLenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LLenarActionPerformed
+String Completo = (String) LLenar.getSelectedItem();
+        llenarBus(Completo);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LLenarActionPerformed
+    private void llenarBus(String Cod)
+    {
+               modeloBusqueda.setRowCount(0);
+
+         try {
+
+            
+            
+
+            String datos[] = new String[6];
+            Statement sx = Consulta.createStatement();
+            ResultSet Ca = sx.executeQuery("SELECT Codigo,Nombre,Marca,Medida,Existencia,StockMinimo FROM Producto where Codigo='"+Cod+"'");
+            while (Ca.next()) {
+                datos[0]=Ca.getString(1);
+                datos[1] = Ca.getString(2);
+                datos[2] = Ca.getString(3);
+                datos[3] = Ca.getString(4);
+                datos[4] = Ca.getString(5);
+                datos[5] = Ca.getString(6);
+                modeloBusqueda.addRow(datos);
+            }
+            Inventario.setModel(modeloBusqueda);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    private void prod()    
+    {
+        AutoCompleteDecorator.decorate(LLenar);
+
+        try {
+            Statement sx = Consulta.createStatement();
+            ResultSet Ca = sx.executeQuery("SELECT Codigo FROM Producto");
+            while (Ca.next()) {
+
+                    LLenar.addItem(Ca.getString(1));
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+    }
     /**
      * @param args the command line arguments
      */
@@ -622,15 +744,20 @@ public class Inventario extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Act;
     private javax.swing.JMenuItem Editar;
-    private javax.swing.JTable Inventario;
+    private javax.swing.JButton Generar;
+    private rojerusan.RSTableMetro Inventario;
+    private rojerusan.RSComboMetro LLenar;
     private javax.swing.JPopupMenu Menu;
+    private javax.swing.JRadioButton P2;
+    private javax.swing.JPanel Panel;
+    private javax.swing.JRadioButton Todo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
