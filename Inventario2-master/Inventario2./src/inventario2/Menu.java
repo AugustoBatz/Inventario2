@@ -23,6 +23,8 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         this.setResizable(false);
+                this.setTitle("Menu Principal - Sistema Inventario BTZ");
+
          setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
          
         // this.setSize(720,310);

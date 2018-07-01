@@ -36,6 +36,7 @@ public class verprove extends javax.swing.JFrame {
                 return false;
             }
         };
+        this.setTitle("Proveedores - Sistema Inventario BTZ");
         modelo.addColumn("Nit");
         modelo.addColumn("Nombre");
         modelo.addColumn("Representante");
@@ -45,7 +46,7 @@ public class verprove extends javax.swing.JFrame {
         String datos[] = new String[5];
         try {
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT Nit, Nombre, Representante, Direccion, Numero FROM Proveedor;");
+            ResultSet Ca = sx.executeQuery("SELECT Nit, NombreV, Representante, Direccion, Numero FROM Proveedor;");
             while(Ca.next()){
                 datos[0] = Ca.getString(1);
                 datos[1] = Ca.getString(2);

@@ -45,6 +45,7 @@ public class verclientes extends javax.swing.JFrame {
                 return false;
             }
         };
+        this.setTitle("Clientes - Sistema Inventario BTZ");
         modelo.addColumn("Nit");
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellido");
@@ -55,7 +56,7 @@ public class verclientes extends javax.swing.JFrame {
        String datos[] = new String[5];
         try {
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT Nit, Nombre, Apellido, Numero, Direccion FROM Cliente;");
+            ResultSet Ca = sx.executeQuery("SELECT Nit, NombreC, Apellido, Numero, Direccion FROM Cliente;");
             while(Ca.next()){
                 datos[0] = Ca.getString(1);
                 datos[1] = Ca.getString(2);

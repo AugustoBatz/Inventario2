@@ -54,7 +54,7 @@ public class Registro extends javax.swing.JFrame {
      */
     public Registro() {
         initComponents();
-                
+                this.setTitle("Registro Compras - Sistema Inventario BTZ");
         P.setVisible(false);
         P2.setVisible(false);
         Buscador.setVisible(false);

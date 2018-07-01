@@ -22,11 +22,13 @@ import javax.swing.JOptionPane;
 public class Resolucion extends javax.swing.JFrame {
      Conexion con = new Conexion();
     Connection tr = con.conexion();
+    
     /**
      * Creates new form Resolucion
      */
     public Resolucion() {
         initComponents();
+        this.setTitle("Resoluciones - Sistema Inventario BTZ");
         Serie.setText("");
         Final.setText("");
         Inicio.setText("");

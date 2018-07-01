@@ -5,7 +5,9 @@
  */
 package inventario2;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -57,7 +59,10 @@ public class Cotizacion extends javax.swing.JFrame {
 
         AutoCompleteDecorator.decorate(Producto);
         AutoCompleteDecorator.decorate(Nit);
-
+        this.setTitle("Cotización - Sistema Inventario BTZ");
+        this.setSize(650,550);
+         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();    
+        this.setLocation(dim.width/4-this.getSize().width/4, dim.height/10-this.getSize().height/10);
         modelo.setRowCount(0);
         modelo.addColumn("Cantidad");//0
         modelo.addColumn("Nombre");//1
@@ -172,7 +177,7 @@ public class Cotizacion extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Factura);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 560, 270));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 560, 240));
 
         jLabel10.setText("Codigo");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));

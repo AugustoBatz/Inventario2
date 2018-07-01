@@ -143,28 +143,7 @@ public class Compras extends javax.swing.JFrame {
         }
         return x;
     }
-    private int CuantosLotes(String Codigo) {
-        int cantidad = 0;
-        int NoLotes = 0;
-        cantidad = Integer.parseInt(Cantidad.getText());
-
-        try {
-
-            Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT Cantidad FROM Lote  where Producto_id='" + Codigo + "' ORDER BY Fecha ASC");
-            while (Ca.next()) {
-                if (cantidad > 0) {
-                    cantidad = cantidad - Integer.parseInt(Ca.getString(1));
-                    NoLotes++;
-
-                }
-            }
-            return NoLotes;
-        } catch (SQLException ex) {
-            Logger.getLogger(Ventas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
+  
     private int getidPro(String Nom, String Marca,String uni) {
         int id3 = 0;
         try {
@@ -403,10 +382,10 @@ public class Compras extends javax.swing.JFrame {
         panel3.add(Otro, new org.netbeans.lib.awtextra.AbsoluteConstraints(114, 12, 301, -1));
 
         Nombre.setText("Nombre");
-        panel3.add(Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 118, -1));
+        panel3.add(Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 118, -1));
 
         Marca.setText("Marca");
-        panel3.add(Marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 107, -1));
+        panel3.add(Marca, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 107, -1));
 
         Cantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -450,10 +429,10 @@ public class Compras extends javax.swing.JFrame {
         jLabel20.setText("%");
         panel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 170, 30, 30));
 
-        jLabel23.setText("Nombre:");
+        jLabel23.setText("Producto:");
         panel3.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
-        jLabel24.setText("Apellido:");
+        jLabel24.setText("Marca");
         panel3.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 89, -1, -1));
 
         Costo.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -598,17 +577,7 @@ public class Compras extends javax.swing.JFrame {
 
     }
 
-
-
-    private float precio() {
-        float cu = Float.parseFloat(Costo.getText());
-        float ganancia = Float.parseFloat(Ganancia.getText());
-        ganancia = ganancia / 100;
-        float preciou = 0;
-        preciou = cu + cu * ganancia;
-        return preciou;
-    }
-
+    
     private void CrearLote(int idProd, int lotegrande, String idProv,String inf[],int id) {
         try {
             int idUsuario = 0;
@@ -850,7 +819,7 @@ public class Compras extends javax.swing.JFrame {
     }//GEN-LAST:event_Otro1ActionPerformed
 
     private void CostoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CostoKeyTyped
-
+        
         int k = (int) evt.getKeyChar();
         if (k == 10) {
             Costo.transferFocus();
@@ -943,7 +912,7 @@ public class Compras extends javax.swing.JFrame {
                 int TC=0;
                 TC=Integer.valueOf(TotalCantidad.getText());
                 BigDecimal auxT=BigDecimal.valueOf(Double.parseDouble(Totales.getText()));
-                auxT=auxT.add(PrecioTotal(          PrecioUnitario(Double.parseDouble(Costo.getText()),Double.parseDouble(Ganancia.getText()),Double.parseDouble(Costo.getText())),Double.parseDouble(Cantidad.getText())));
+                auxT=auxT.add(PrecioTotal(PrecioUnitario(Double.parseDouble(Costo.getText()),Double.parseDouble(Ganancia.getText()),Double.parseDouble(Costo.getText())),Double.parseDouble(Cantidad.getText())));
                 Totales.setText(String.valueOf((auxT)));
                 TC=TC+Integer.valueOf(Cantidad.getText());
                 TotalCantidad.setText(String.valueOf(TC));

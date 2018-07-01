@@ -5,16 +5,22 @@
  */
 package inventario2;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+
+
 
 
 /**
@@ -24,26 +30,44 @@ import javax.swing.table.TableColumnModel;
 public class MostrarLotes extends javax.swing.JFrame {
     
     Conexion con = new Conexion();
-   
+   private int tp=0;
+   private int n2=0;
+   private int año=0;
+   private int mes=0;
+   private int dia=0;
     Connection Consulta = con.conexion();
-    /**
-     * Creates new form MostrarLotes
-     */
-    public MostrarLotes(String Marca,String Nombre) {
-        initComponents();
-        this.setSize(1200, 1000);
-        this.Marca.setText(Marca);
-        this.Nombre.setText(Nombre);
-        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE); 
-
-       
-      
-          
-            DefaultTableModel modeloBusqueda = new DefaultTableModel() {
+    String[] ML= new String[4];
+     DefaultTableModel modeloBusqueda = new DefaultTableModel() {
                 public boolean isCellEditable(int rowIndex, int columnIndex) {
                     return false;
                 }
             };
+    /**
+     * Creates new form MostrarLotes
+     */
+    public MostrarLotes(String Marca,String Nombre,String Uni) {
+        initComponents();
+        this.setSize(1300, 1000);
+        this.setResizable(false);
+        this.Marca.setText(Marca);
+        this.Nombre.setText(Nombre);
+        this.Unidad.setText(Uni);
+        this.setTitle("Stock "+Nombre +", "+Marca+" - Sistema Inventario BTZ");
+        PanelEditar.setVisible(false);
+        this.setDefaultCloseOperation(this.HIDE_ON_CLOSE); 
+        Nuevo1.setVisible(false); Nuevo2.setVisible(false); Nuevo3.setVisible(false);
+        CostoN.setVisible(false);PUN.setVisible(false); PTN.setVisible(false);
+        brz.setVisible(false);
+        CostoE.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e){
+             CostoE.setText(null);
+             tp=0;
+             n2=0;
+            }
+        });
+       
+          
+            
             modeloBusqueda.addColumn("No Lote");
             modeloBusqueda.addColumn("Fecha");
             modeloBusqueda.addColumn("Cantidad");
@@ -60,19 +84,19 @@ public class MostrarLotes extends javax.swing.JFrame {
            
       
             
-            String datos[] = new String[10];
+            String datos[] = new String[11];
 
           try {
 
             Statement sx = Consulta.createStatement();
-            ResultSet Ca = sx.executeQuery("SELECT L.NoLote, L.Fecha,L.Cantidad,L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal,V.Nombre,L.Ganancia FROM Producto P \n" +
+            ResultSet Ca = sx.executeQuery("SELECT L.NoLote, L.Fecha,L.Cantidad,L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal,V.NombreV,L.Ganancia FROM Producto P \n" +
 "inner JOIN Lote L \n" +
 "on P.id=L.Producto_id \n" +
 "inner JOIN FacturaCompra F\n" +
 "on L.FacturaCompra_id=F.id\n" +
 "inner JOIN Proveedor V \n" +
 "on V.id=F.Proveedor_id\n" +
-"WHERE P.Marca= '"+Marca+"'&& L.Disponible=true &&P.Nombre='"+Nombre+"' ORDER BY L.Fecha;");
+"WHERE P.Marca= '"+Marca+"'&& L.Disponible=true && P.Nombre='"+Nombre+"' && Medida='"+Unidad.getText()+"' ORDER BY L.Fecha;");
           
             while (Ca.next()) {
                
@@ -109,20 +133,57 @@ public class MostrarLotes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        Editar = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        Nombre = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        Nombre = new javax.swing.JLabel();
         Marca = new javax.swing.JLabel();
+        Nombre1 = new javax.swing.JLabel();
+        Unidad = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Lote = new javax.swing.JTable();
+        Lote = new rojerusan.RSTableMetro();
+        PanelEditar = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        NL = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        CantidadE = new javax.swing.JTextField();
+        CostoE = new javax.swing.JTextField();
+        DescripcionE = new javax.swing.JTextField();
+        GananciaE = new javax.swing.JTextField();
+        Fecha = new com.toedter.calendar.JDateChooser();
+        jLabel7 = new javax.swing.JLabel();
+        Validar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        Nuevo1 = new javax.swing.JLabel();
+        PUN = new javax.swing.JLabel();
+        Nuevo3 = new javax.swing.JLabel();
+        Nuevo2 = new javax.swing.JLabel();
+        PTN = new javax.swing.JLabel();
+        CostoN = new javax.swing.JLabel();
+        brz = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+
+        Editar.setText("Editar");
+        Editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(Editar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(189, 189, 189));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Nombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        Nombre.setText("Nombre");
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("Producto");
@@ -130,8 +191,58 @@ public class MostrarLotes extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Marca");
 
+        Nombre.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Nombre.setText("Nombre");
+
         Marca.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         Marca.setText("jLabel4");
+
+        Nombre1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Nombre1.setText("Unidad");
+
+        Unidad.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Unidad.setText("jLabel4");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(Nombre))
+                .addGap(41, 41, 41)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Marca)
+                    .addComponent(jLabel3))
+                .addGap(45, 45, 45)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Nombre1)
+                    .addComponent(Unidad))
+                .addContainerGap(59, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Marca)
+                            .addComponent(Nombre)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(Nombre1)
+                        .addGap(18, 18, 18)
+                        .addComponent(Unidad)))
+                .addContainerGap(74, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 10, 380, 180));
 
         Lote.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -144,66 +255,525 @@ public class MostrarLotes extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        Lote.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LoteMouseClicked(evt);
+        Lote.setComponentPopupMenu(jPopupMenu1);
+        Lote.setFuenteHead(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        Lote.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                LoteFocusGained(evt);
             }
         });
         jScrollPane1.setViewportView(Lote);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Nombre)
-                    .addComponent(Marca))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Nombre)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(Marca))
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 1260, 430));
+
+        PanelEditar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PanelEditar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                PanelEditarFocusLost(evt);
+            }
+        });
+        PanelEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                PanelEditarMouseExited(evt);
+            }
+        });
+        PanelEditar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("Costo Unitario");
+        PanelEditar.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
+
+        NL.setBackground(new java.awt.Color(12, 161, 239));
+        NL.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        NL.setText("NO:");
+        PanelEditar.add(NL, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 70, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setText("Ganancia");
+        PanelEditar.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, -1, -1));
+
+        CantidadE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CantidadEKeyTyped(evt);
+            }
+        });
+        PanelEditar.add(CantidadE, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 69, -1));
+
+        CostoE.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                CostoEFocusLost(evt);
+            }
+        });
+        CostoE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CostoEActionPerformed(evt);
+            }
+        });
+        CostoE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                CostoEKeyTyped(evt);
+            }
+        });
+        PanelEditar.add(CostoE, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 40, 87, -1));
+        PanelEditar.add(DescripcionE, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 40, 160, -1));
+
+        GananciaE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                GananciaEKeyTyped(evt);
+            }
+        });
+        PanelEditar.add(GananciaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 50, -1));
+        PanelEditar.add(Fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 138, -1));
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel7.setText("Descripcion");
+        PanelEditar.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 10, -1, -1));
+
+        Validar.setText("Validar");
+        Validar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ValidarActionPerformed(evt);
+            }
+        });
+        PanelEditar.add(Validar, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 90, -1, -1));
+
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        PanelEditar.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 130, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel6.setText("Cantidad");
+        PanelEditar.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, -1, -1));
+
+        Nuevo1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Nuevo1.setText("Nuevo Costo Total");
+        PanelEditar.add(Nuevo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, -1, -1));
+
+        PUN.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        PUN.setText("Cantidad");
+        PanelEditar.add(PUN, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, -1, -1));
+
+        Nuevo3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Nuevo3.setText("Nuevo Precio Total");
+        PanelEditar.add(Nuevo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, -1, -1));
+
+        Nuevo2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Nuevo2.setText("Nuevo Precio Unitario");
+        PanelEditar.add(Nuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, -1, -1));
+
+        PTN.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        PTN.setText("Cantidad");
+        PanelEditar.add(PTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 120, -1, -1));
+
+        CostoN.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        CostoN.setText("Cantidad");
+        PanelEditar.add(CostoN, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, -1));
+
+        brz.setText("Confirmar");
+        brz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brzActionPerformed(evt);
+            }
+        });
+        PanelEditar.add(brz, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 130, -1, -1));
+
+        jLabel5.setBackground(new java.awt.Color(12, 161, 239));
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setText("Fecha");
+        PanelEditar.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
+
+        jLabel8.setBackground(new java.awt.Color(12, 161, 239));
+        jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel8.setText("Modificar");
+        PanelEditar.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
+
+        jLabel10.setBackground(new java.awt.Color(12, 161, 239));
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel10.setText("Lote");
+        PanelEditar.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, -1, -1));
+
+        jLabel11.setBackground(new java.awt.Color(12, 161, 239));
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel11.setText("NO:");
+        PanelEditar.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+
+        jPanel1.add(PanelEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 880, 180));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1279, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void LoteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoteMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LoteMouseClicked
+    private void EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarActionPerformed
+       int seleccionar = 0;
+        seleccionar = Lote.getSelectedRow();
+        Boolean s=true;
+        if (seleccionar == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione un fila valida");
+        } 
+        else
+        {
+            if(s==true)
+            {
+                
+                PanelEditar.setVisible(true);
+                llenarPanel();
+                
 
+            }
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EditarActionPerformed
+
+    private void ValidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ValidarActionPerformed
+        if(CantidadE.getText().equals("")||CostoE.getText().equals(""))
+        {
+            JOptionPane.showMessageDialog(null, "Campo(s) Vacios(s)");
+
+        }
+        else
+        {
+            String[] datos=new String [4];
+            datos[0]=CantidadE.getText(); datos[1]=CostoE.getText();datos[2]=DescripcionE.getText();datos[3]=GananciaE.getText();
+            calcular(datos);
+            validar(datos);
+           
+            
+        }
+    }//GEN-LAST:event_ValidarActionPerformed
+    private void validar(String x[])
+    {
+        BigDecimal otro;
+        otro=PrecioUnitario(Double.parseDouble(CostoE.getText()),Double.parseDouble(GananciaE.getText()),Double.parseDouble(CostoE.getText()));
+        PUN.setText(String.valueOf(otro));
+        PUN.setVisible(true);
+        Nuevo2.setVisible(true);
+        BigDecimal otro2;
+        otro2=PrecioTotal(PrecioUnitario(Double.parseDouble(CostoE.getText()),Double.parseDouble(GananciaE.getText()),Double.parseDouble(CostoE.getText())),Double.parseDouble(CantidadE.getText()));
+        PTN.setText(String.valueOf(otro2));
+        PTN.setVisible(true);
+        Nuevo3.setVisible(true);
+    }
+    private BigDecimal PrecioUnitario(Double PreU,Double G,Double CU)
+    {
+        BigDecimal w=BigDecimal.valueOf(PreU).multiply(BigDecimal.valueOf(G)).setScale(2, BigDecimal.ROUND_DOWN);      
+        w=w.divide(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_DOWN);
+        w=w.add(BigDecimal.valueOf(CU)).setScale(2, BigDecimal.ROUND_DOWN);
+        return w;
+    }
+    private BigDecimal PrecioTotal(BigDecimal Uni,Double T)
+    {
+        return Uni.multiply(BigDecimal.valueOf(T)).setScale(2, BigDecimal.ROUND_DOWN);
+    }
+    private void CantidadEKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CantidadEKeyTyped
+              int k = (int) evt.getKeyChar();
+        if (k >= 97 && k <= 127 || k >= 58 && k <= 97) {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null, "No puede ingresar letras!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        if (k == 241 || k == 209) {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null, "No puede ingresar letras!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        if (k >= 33 && k <= 47) {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null, "No puede ingresar Simbolos!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        if (k == 10) {
+            CantidadE.transferFocus();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CantidadEKeyTyped
+
+    private void CostoEKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CostoEKeyTyped
+        int k = (int) evt.getKeyChar();
+        if (k == 10) {
+            CostoE.transferFocus();
+            tp=1;
+            CostoE.setText(""+x(Double.parseDouble(CostoE.getText())));
+
+        }
+        else{
+            if(k==46)
+            {
+                tp++;
+            }
+
+            if(tp>1)
+            {
+                evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+                JOptionPane.showMessageDialog(null, "Punto de mas", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+                tp--;
+            }
+
+            if (k >= 97 && k <= 127 || k >= 58 && k <= 97) {
+                evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+                JOptionPane.showMessageDialog(null, "No puede ingresar letras!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+            }
+            if (k == 241 || k == 209) {
+                evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+                JOptionPane.showMessageDialog(null, "No puede ingresar letras!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+            }
+            if (k >= 33 && k <= 45 || k==47 ) {
+                evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+                JOptionPane.showMessageDialog(null, "No puede ingresar Simbolos!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }        // TODO add your handling code here:
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CostoEKeyTyped
+
+    private void CostoEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CostoEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CostoEActionPerformed
+
+    private void CostoEFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CostoEFocusLost
+        try
+        {
+            CostoE.setText(""+x(Double.parseDouble(CostoE.getText())));
+        }
+        catch(NumberFormatException ex) {
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CostoEFocusLost
+ private void actualizar()
+    {           modeloBusqueda.setRowCount(0);
+
+         int c=0;
+           String datos3[] = new String[11];
+
+
+          try {
+            
+            
+
+            Statement sx = Consulta.createStatement();
+            ResultSet Cat = sx.executeQuery("SELECT L.NoLote, L.Fecha,L.Cantidad,L.CostoUnitario,L.CostoTotal,L.Descripcion,L.PrecioUnitario,L.PrecioTotal,V.NombreV,L.Ganancia FROM Producto P \n" +
+"inner JOIN Lote L \n" +
+"on P.id=L.Producto_id \n" +
+"inner JOIN FacturaCompra F\n" +
+"on L.FacturaCompra_id=F.id\n" +
+"inner JOIN Proveedor V \n" +
+"on V.id=F.Proveedor_id\n" +
+"WHERE P.Marca= '"+Marca.getText()+"'&& L.Disponible=true && P.Nombre='"+Nombre.getText()+"' && Medida='"+Unidad.getText()+"'ORDER BY L.Fecha");
+         
+            while (Cat.next()) {
+               c++;
+                datos3[0] = Cat.getString(1);
+                datos3[1] = Cat.getString(2);
+                datos3[2] = Cat.getString(3);
+                datos3[3] = Cat.getString(4);
+                datos3[4] = Cat.getString(5);
+                datos3[5] = Cat.getString(6);
+                datos3[6] = Cat.getString(7);
+                datos3[7] = Cat.getString(8);
+                datos3[8] = Cat.getString(9);           
+                datos3[9] = Cat.getString(10)+"%";
+                modeloBusqueda.addRow(datos3);
+                
+            }
+            Lote.setModel(modeloBusqueda);
+            Lote.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ingreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void brzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brzActionPerformed
+      
+        try
+        {
+ 
+       año = Fecha.getCalendar().get(Calendar.YEAR);
+         mes = Fecha.getCalendar().get(Calendar.MONTH) + 1;
+         dia = Fecha.getCalendar().get(Calendar.DAY_OF_MONTH);
+                                            
+    }                                        
+
+    
+    catch(NullPointerException ex) {
+    }
+        if(año==0&&mes==0&&dia==0)
+        {
+            USF();
+            actualizar();
+        // TODO add your handling code here:
+        PanelEditar.setVisible(false);
+        Lote.setVisible(true);
+        }
+        else
+        {
+            String Fecha=año+"-"+mes+"-"+dia;
+            UCF(Fecha);
+            actualizar();
+        // TODO add your handling code here:
+        PanelEditar.setVisible(false);
+        Lote.setVisible(true);
+        }
+        Nuevo1.setVisible(false); Nuevo2.setVisible(false); Nuevo3.setVisible(false);
+        CostoN.setVisible(false);PUN.setVisible(false); PTN.setVisible(false);
+        brz.setVisible(false);
+        NuevaExistencia(Suma());
+        
+    }//GEN-LAST:event_brzActionPerformed
+    private void NuevaExistencia(String e)
+    {
+        try {
+            PreparedStatement ActualizarProveedor = Consulta.prepareStatement("Update Producto set Existencia='"+e+"' where id='"+idPro()+"'");
+            ActualizarProveedor.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLotes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private String Suma()
+    {   
+         String s=null;
+        try {
+           
+            Statement sx = Consulta.createStatement();
+            ResultSet Ca = sx.executeQuery("select sum(L.Cantidad) from Lote L\n" +
+"inner JOIN Producto P\n" +
+"on P.id=L.Producto_id where P.id='"+idPro()+"';");
+            while(Ca.next())
+            {
+                s=Ca.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLotes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     return s;
+
+    }
+    private String idPro()
+   {                String id=null;
+
+        try {
+            Statement sx = Consulta.createStatement();
+            ResultSet Ca = sx.executeQuery("Select id from Producto where Nombre='"+Nombre.getText()+"' && Marca='"+Marca.getText()+"' && Medida='"+Unidad.getText()+"'");
+            while(Ca.next())
+            {
+                id=Ca.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLotes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+
+   }
+    private String idLote()
+   {    String id=null;
+        try {
+            Statement sx = Consulta.createStatement();
+            ResultSet Ca = sx.executeQuery("SELECT id FROM Lote where NoLote='"+NL.getText()+"' && Producto_id='"+idPro()+"'");
+            while(Ca.next())
+            {
+                id=Ca.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLotes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+   }
+    private void USF()
+   {
+       String id=idLote();
+        try {
+            PreparedStatement ActualizarProveedor = Consulta.prepareStatement("UPDATE Lote SET Cantidad='"+CantidadE.getText()+"',CostoUnitario='"+CostoE.getText()+"',CostoTotal='"+CostoN.getText()+"',Descripcion='"+DescripcionE.getText()+"',Ganancia='"+GananciaE.getText()+"',PrecioUnitario='"+PUN.getText()+"',PrecioTotal='"+PTN.getText()+"' where id='"+id+"'");
+            ActualizarProveedor.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLotes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+    private void UCF(String f)
+   {
+       String id=idLote();
+        try {
+            PreparedStatement ActualizarProveedor = Consulta.prepareStatement("UPDATE Lote SET Fecha='"+f+"' ,Cantidad='"+CantidadE.getText()+"',CostoUnitario='"+CostoE.getText()+"',CostoTotal='"+CostoN.getText()+"',Descripcion='"+DescripcionE.getText()+"',Ganancia='"+GananciaE.getText()+"',PrecioUnitario='"+PUN.getText()+"',PrecioTotal='"+PTN.getText()+"' where id='"+id+"'");
+            ActualizarProveedor.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MostrarLotes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+    private void GananciaEKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GananciaEKeyTyped
+          int k = (int) evt.getKeyChar();
+        if (k >= 97 && k <= 127 || k >= 58 && k <= 97) {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null, "No puede ingresar letras!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        if (k == 241 || k == 209) {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null, "No puede ingresar letras!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        if (k >= 33 && k <= 47) {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            JOptionPane.showMessageDialog(null, "No puede ingresar Simbolos!!!", "Ventana Error Datos", JOptionPane.ERROR_MESSAGE);
+        }
+        if (k == 10) {
+            GananciaE.transferFocus();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GananciaEKeyTyped
+
+    private void PanelEditarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_PanelEditarFocusLost
+        PanelEditar.setVisible(false);
+        PanelEditar.setEnabled(false);
+    }//GEN-LAST:event_PanelEditarFocusLost
+
+    private void PanelEditarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PanelEditarMouseExited
+    }//GEN-LAST:event_PanelEditarMouseExited
+
+    private void LoteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LoteFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LoteFocusGained
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Nuevo1.setVisible(false); Nuevo2.setVisible(false); Nuevo3.setVisible(false);
+        CostoN.setVisible(false);PUN.setVisible(false); PTN.setVisible(false);
+        brz.setVisible(false);
+        PanelEditar.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+     private BigDecimal x(Double r)
+    {
+        return BigDecimal.valueOf(r).setScale(2, BigDecimal.ROUND_DOWN);
+    }    private void calcular(String x[])
+    {
+        BigDecimal n=new BigDecimal(0);
+        n=BigDecimal.valueOf(Double.valueOf(x[0])).multiply(BigDecimal.valueOf(Double.valueOf(x[1])).setScale(2, BigDecimal.ROUND_DOWN)).setScale(2, BigDecimal.ROUND_DOWN);
+        CostoN.setText(String.valueOf(n));
+        CostoN.setVisible(true);
+        Nuevo1.setVisible(true);
+        brz.setVisible(true);
+        
+    }
+   
+    private void llenarPanel()
+    {
+        NL.setText(String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 0)));
+        CantidadE.setText(String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 2)));
+        ML[0]=String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 2));
+        CostoE.setText(String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 3)));
+        ML[1]=String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 3));
+        DescripcionE.setText(String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 5)));
+        ML[2]=String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 5));
+        String Ganancia=String.valueOf(Lote.getValueAt(Lote.getSelectedRow(), 9));
+        GananciaE.setText(Ganancia.substring(0,Ganancia.length()-1));
+        ML[3]=Ganancia;
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -234,18 +804,47 @@ public class MostrarLotes extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               new MostrarLotes("","").setVisible(true);
+               new MostrarLotes("","","").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable Lote;
+    private javax.swing.JTextField CantidadE;
+    private javax.swing.JTextField CostoE;
+    private javax.swing.JLabel CostoN;
+    private javax.swing.JTextField DescripcionE;
+    private javax.swing.JMenuItem Editar;
+    private com.toedter.calendar.JDateChooser Fecha;
+    private javax.swing.JTextField GananciaE;
+    private rojerusan.RSTableMetro Lote;
     private javax.swing.JLabel Marca;
+    private javax.swing.JLabel NL;
     private javax.swing.JLabel Nombre;
+    private javax.swing.JLabel Nombre1;
+    private javax.swing.JLabel Nuevo1;
+    private javax.swing.JLabel Nuevo2;
+    private javax.swing.JLabel Nuevo3;
+    private javax.swing.JLabel PTN;
+    private javax.swing.JLabel PUN;
+    private javax.swing.JPanel PanelEditar;
+    private javax.swing.JLabel Unidad;
+    private javax.swing.JButton Validar;
+    private javax.swing.JButton brz;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

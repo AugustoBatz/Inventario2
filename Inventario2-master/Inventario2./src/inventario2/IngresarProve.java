@@ -202,7 +202,7 @@ public class IngresarProve extends javax.swing.JFrame {
     }//GEN-LAST:event_DireccionActionPerformed
     private void CrearPro() {
         try {
-            PreparedStatement CrearPro = cn.prepareStatement("INSERT INTO Proveedor(Nombre,Representante,Nit,Direccion,Numero,Correo) VALUES(?,?,?,?,?,?)");
+            PreparedStatement CrearPro = cn.prepareStatement("INSERT INTO Proveedor(NombreV,Representante,Nit,Direccion,Numero,Correo) VALUES(?,?,?,?,?,?)");
             CrearPro.setString(1, Nombre.getText());
             CrearPro.setString(2, Representante.getText());
             CrearPro.setString(3, Nit.getText());

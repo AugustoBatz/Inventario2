@@ -63,6 +63,8 @@ public class Ventas extends javax.swing.JFrame {
     }
     public Ventas() {
         initComponents();
+                this.setTitle("Ventas- Sistema Inventario BTZ");
+
         Producto.requestFocus();
         this.setDefaultCloseOperation(this.HIDE_ON_CLOSE);
         SYN();
@@ -109,8 +111,8 @@ public class Ventas extends javax.swing.JFrame {
                 Point point = Mouse_evt.getPoint();
                 int row = table.rowAtPoint(point);
                 if (Mouse_evt.getClickCount() == 2) {
-                    int e=ext(String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 1)),
-                            String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 2)));
+                    int e=ext(String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 2)),
+                            String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 3)));
                     String mensaje=mensaje(String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 0)));
                     
                     if(Integer.parseInt(mensaje)>e)
@@ -118,18 +120,40 @@ public class Ventas extends javax.swing.JFrame {
                          JOptionPane.showMessageDialog(null, "Excede La existencia");
 
                     }
+                    if(mensaje.equals("0"))
+                    {
+                         JOptionPane.showMessageDialog(null, "No se permite que ingrese 0");
+                        
+                    }
                     else
                     {
-                        Double x=(Double.parseDouble(String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 4))))*Double.parseDouble(mensaje);
+                        Double x=(Double.parseDouble(String.valueOf(Factura.getValueAt(Factura.getSelectedRow(), 5))))*Double.parseDouble(mensaje);
                         Factura.setValueAt(mensaje, row, 0);
-                        Factura.setValueAt(String.valueOf(x), row, 3);
+                        Factura.setValueAt(String.valueOf(x), row, 4);
+                        sumar_columnas();
                     }
                  
                 }
             }
         });
     }
-    
+    private void sumar_columnas()
+    {
+        if(Factura.getRowCount()!=0)
+        {
+            BigDecimal n=BigDecimal.valueOf(0);
+            int c=0;
+            for (int i = 0; i < Factura.getRowCount(); i++) 
+            {
+               c = c+Integer.valueOf(Factura.getValueAt(i, 0).toString().trim());
+               n=n.add(BigDecimal.valueOf(Double.valueOf(Factura.getValueAt(i, 4).toString().trim())));
+               
+               
+            }
+            TC.setText(String.valueOf(c));
+            TC1.setText(String.valueOf(n));
+        }
+    }
     private String mensaje(String x)
     {
         int numero=0;
@@ -501,17 +525,18 @@ public class Ventas extends javax.swing.JFrame {
                                     .addComponent(jLabel10)
                                     .addComponent(Producto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(NombrePM)
-                                    .addComponent(NombreP)
-                                    .addComponent(jLabel11))
+                                    .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(NombreP)
+                                        .addComponent(jLabel11)))
                                 .addGap(18, 18, 18)
-                                .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(MarcaM)
                                     .addComponent(Marca)))
                             .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
                             .addComponent(Existencia)))
                     .addComponent(addfila, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -930,7 +955,7 @@ public class Ventas extends javax.swing.JFrame {
     }
     private void addfilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addfilaActionPerformed
 
-        if (Cantidad.getText().equals("")) {
+        if (Cantidad.getText().equals("")||Cantidad.getText().equals("0")) {
             JOptionPane.showMessageDialog(null, "Ingrese la Cantidad que desea comprar de: " + NombreP.getText());
 
         } else {
